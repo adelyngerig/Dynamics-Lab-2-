@@ -16,14 +16,7 @@ for i = 1: length(filenames)
     grid on;
 end
 
-
-%% Go into the folder
-addpath("Locomotive_Data_2020/");
-
-%% Omega Calculation
-filenames = ["Test1_5pt5V"; "Test1_6pt5V"; "Test1_7pt5V"; "Test1_8pt5V"; "Test1_9pt5V"; "Test1_10pt5V"];
-
-%% Function
+%% Call LCSMODEL Function
 
 r = 75;
 d = 155;
@@ -47,3 +40,7 @@ for i = 1: length(filenames)
     xlabel("Model Angular Velocity (deg/s)");
     grid on;
 end
+
+
+
+

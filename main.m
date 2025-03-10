@@ -10,18 +10,17 @@ for i = 1: length(filenames)
     yline(0, 'r-', 'LineWidth', 1);
     xlim([0 2160]);
     ylim([-1650 2160]);
-    title("Experimental Velocity vs. Experimental Angular Velocity for " + filenames(i), 'Interpreter', 'none');
+    title("Experimental Velocity vs. Experimental Angle for " + filenames(i), 'Interpreter', 'none');
     ylabel("Experimental Velocity (mm/s)");
-    xlabel("Experimental Angular Velocity (deg/s)");
+    xlabel("Experimental Angle (deg)");
     grid on;
 end
 
 %% Call LCSMODEL Function
-
-r = 75;
-d = 155;
-l = 260;
-theta = [0: 2160];
+r = 0.75;
+d = 1.55;
+l = 2.60;
+theta = 0: 2160;
 
 figure();
 for i = 1: length(filenames)
@@ -35,12 +34,8 @@ for i = 1: length(filenames)
     yline(0, 'r-', 'LineWidth', 1);
     xlim([0 2160]);
     ylim([-1650 2160]);
-    title("Model Velocity vs. Model Angular Velocity for " + filenames(i), 'Interpreter', 'none');
+    title("Model Velocity vs. Model Angle for " + filenames(i), 'Interpreter', 'none');
     ylabel("Model Velocity (mm/s)");
-    xlabel("Model Angular Velocity (deg/s)");
+    xlabel("Model Angle (deg)");
     grid on;
 end
-
-
-
-

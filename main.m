@@ -63,23 +63,115 @@ for i = 1: length(filenames)
 
     [v_mod] = LCSMODEL(r, d, l, theta_exp, w);
 
-    v_diff = v_exp - v_mod;
+    signed_v_diff = v_exp - v_mod;
+    abs_v_diff = abs(signed_v_diff);
 
-    subplot(2, 3, i);
-    plot(time, v_diff, 'r-', 'LineWidth', 1);
-    yline(0, 'k-', 'LineWidth', 1);
-    ylim([-50 50]);
-    xlim([0 7]);
-    title("Residuals vs. Time for " + filenames(i), 'Interpreter', 'none');
-    ylabel("Velocity (cm/s)");
-    xlabel("Time (s)");
-    grid on;
 
     % mean and stardard deviation
-    average(i) = mean(v_diff);
-    sigma(i) = std(v_diff);
+    average_signed(i) = mean(signed_v_diff);
+    sigma_signed(i) = std(signed_v_diff);
+
+    average_abs(i) = mean(abs_v_diff);
+    sigma_abs(i) = std(abs_v_diff);
+
+    % signed residuals plot
+    subplot(2, 3, i);
+    plot(time, signed_v_diff, 'r-', 'LineWidth', 1);
+    yline(average_signed(i), 'k-', 'LineWidth', 1);
+    ylim([-50 50]);
+    title("Signed Residuals vs. Time for " + filenames(i), 'Interpreter', 'none');
+    ylabel("Velocity (cm/s)");
+    xlabel("Time (s)");
+    legend('Signed Residuals', 'Mean');
+    grid on;
 
 end
+
+% absolute residuals plot 
+figure();
+for i = 1: length(filenames)
+    [theta_exp, w_exp, v_exp, time] = LCSDATA(filenames(i));
+
+    w = mean(w_exp) * (pi / 180);
+
+    [v_mod] = LCSMODEL(r, d, l, theta_exp, w);
+
+    signed_v_diff = v_exp - v_mod;
+    abs_v_diff = abs(signed_v_diff);
+
+    subplot(2, 3, i);
+    plot(time, abs_v_diff, 'b-', 'LineWidth', 1);
+    yline(average_abs(i), 'k-', 'LineWidth', 1);
+    ylim([-2 50]);
+    title("Absolute Residuals vs. Time for " + filenames(i), 'Interpreter', 'none');
+    ylabel("Velocity (cm/s)");
+    xlabel("Time (s)");
+    legend('Absolute Residuals', 'Mean');
+    grid on;
+
+end
+
+% both residuals plot for 10.5V
+figure();
+plot(time, signed_v_diff, 'r-', 'LineWidth', 1);
+hold on;
+plot(time, abs_v_diff, 'b-', 'LineWidth', 1);
+hold off;
+yline(average_signed(6), 'k-', 'LineWidth', 1);
+yline(average_abs(6), 'k--', 'LineWidth', 1);
+ylim([-50 50]);
+title("Signed and Absolute Residuals vs. Time for " + filenames(6), 'Interpreter', 'none');
+ylabel("Velocity (cm/s)");
+xlabel("Time (s)");
+legend('Signed Residuals', 'Absolute Residuals', 'Signed Mean', 'Absolute Mean');
+grid on;
+
+% all signed residuals vs time
+figure();
+for i = 1: length(filenames)
+    [theta_exp, w_exp, v_exp, time] = LCSDATA(filenames(i));
+
+    w = mean(w_exp) * (pi / 180);
+
+    [v_mod] = LCSMODEL(r, d, l, theta_exp, w);
+
+    signed_v_diff = v_exp - v_mod;
+    abs_v_diff = abs(signed_v_diff);
+
+    plot(time, signed_v_diff, 'LineWidth', 1);
+    hold on;
+    title("Signed Residuals vs. Time for all Voltages");
+    ylabel("Velocity (cm/s)");
+    xlabel("Time (s)");
+    legend(filenames(1), filenames(2), filenames(3), filenames(4), filenames(5), filenames(6), 'Interpreter', 'none');
+    grid on;
+
+end
+hold off;
+
+% all signed residuals vs theta
+figure();
+for i = 1: length(filenames)
+    [theta_exp, w_exp, v_exp, time] = LCSDATA(filenames(i));
+
+    w = mean(w_exp) * (pi / 180);
+
+    [v_mod] = LCSMODEL(r, d, l, theta_exp, w);
+
+    signed_v_diff = v_exp - v_mod;
+    abs_v_diff = abs(signed_v_diff);
+
+    plot(theta_exp, abs_v_diff, 'LineWidth', 1);
+    hold on;
+    xlim([0 2160]);
+    title("Absolute Residuals vs. Theta for all Voltages");
+    ylabel("Velocity (cm/s)");
+    xlabel("Theta (deg)");
+    legend(filenames(1), filenames(2), filenames(3), filenames(4), filenames(5), filenames(6), 'Interpreter', 'none');
+    grid on;
+
+end
+hold off;
 
 
 
